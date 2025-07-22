@@ -17,8 +17,8 @@ namespace gpio {
     ChipInfo(const ChipInfo&) = delete;
     ChipInfo& operator=(const ChipInfo&) = delete;
 
-    ChipInfo(ChipInfo&& other);
-    ChipInfo& operator=(ChipInfo&& other);
+    ChipInfo(ChipInfo&& other) noexcept;
+    ChipInfo& operator=(ChipInfo&& other) noexcept;
 
     ~ChipInfo();
 

@@ -28,7 +28,7 @@ gpio::Chip::Chip(Chip&& other) noexcept: chip{ other.chip } {
   other.chip = nullptr;
 }
 
-gpio::Chip& gpio::Chip::operator=(Chip&& other) {
+gpio::Chip& gpio::Chip::operator=(Chip&& other) noexcept {
   if (this != &other) {
     close();
     chip = other.chip;

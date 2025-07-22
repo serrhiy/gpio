@@ -13,6 +13,7 @@ namespace gpio {
 
   class LineInfo {
     gpiod_line_info* line_info;
+    const bool call_destructor = true;
 
     bool isValid() const;
     void free();
@@ -20,7 +21,8 @@ namespace gpio {
 
   public:
     LineInfo() = delete;
-    explicit LineInfo(gpiod_chip* chip, unsigned offset);
+    LineInfo(gpiod_chip* chip, unsigned offset);
+    explicit LineInfo(gpiod_info_event* info_event);
 
     LineInfo(const LineInfo&) = delete;
     LineInfo& operator=(const LineInfo&) = delete;

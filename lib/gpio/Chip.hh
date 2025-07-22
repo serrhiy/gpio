@@ -22,7 +22,7 @@ namespace gpio
     Chip& operator=(const Chip& other) = delete;
 
     Chip(Chip&& other) noexcept;
-    Chip& operator=(Chip&& other);
+    Chip& operator=(Chip&& other) noexcept;
 
     ~Chip();
 

@@ -31,6 +31,15 @@ namespace gpio {
     }
   }
 
+  LineInfo::LineInfo(gpiod_info_event* info_event):
+    line_info{ gpiod_info_event_get_line_info(info_event) },
+    call_destructor{ false }
+  {
+    if (!isValid()) {
+      throw std::runtime_error{ "Cannot allocate line info" };
+    }
+  }
+
   LineInfo::LineInfo(LineInfo&& other) noexcept : line_info{ other.line_info } {
     other.line_info = nullptr;
   }
@@ -45,7 +54,7 @@ namespace gpio {
   }
 
   LineInfo::~LineInfo() {
-    free();
+    if (call_destructor) free();
   }
 
   unsigned LineInfo::getOffset() const {
