@@ -1,5 +1,6 @@
 #include "Chip.hh"
 #include "ChipInfo.hh"
+#include "LineInfo.hh"
 
 #include <gpiod.h>
 #include <string>
@@ -56,6 +57,10 @@ int gpio::Chip::getFd() const {
 
 gpio::ChipInfo gpio::Chip::getInfo() {
   return ChipInfo{ chip };
+}
+
+gpio::LineInfo gpio::Chip::getLineInfo(unsigned offset) {
+  return LineInfo{ chip, offset };
 }
 
 void gpio::swap(gpio::Chip& first, gpio::Chip& second) {

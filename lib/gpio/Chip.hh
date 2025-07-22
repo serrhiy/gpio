@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ChipInfo.hh"
+#include "LineInfo.hh"
 
 #include <gpiod.h>
 #include <string>
@@ -34,6 +35,7 @@ namespace gpio
     int getFd() const;
 
     ChipInfo getInfo();
+    LineInfo getLineInfo(unsigned offset);
   };
 
   void swap(Chip& first, Chip& second);
