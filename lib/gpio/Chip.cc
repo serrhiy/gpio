@@ -5,6 +5,7 @@
 #include <gpiod.h>
 #include <string>
 #include <stdexcept>
+#include <filesystem>
 
 void gpio::Chip::close() {
   if (!isValid()) return;
@@ -18,9 +19,13 @@ void gpio::Chip::throwIfIsNotValid() const {
   }
 }
 
-gpio::Chip::Chip(const std::string& path): chip{ gpiod_chip_open(path.c_str()) } {
+gpio::Chip::Chip(const std::filesystem::path& path): chip{ nullptr } {
+  if (!std::filesystem::exists(path)) {
+    throw std::runtime_error{ "File does not exists" };
+  }
+  chip = gpiod_chip_open(path.c_str());
   if (!isValid()) {
-    throw std::runtime_error{ "Cannot open chip " + path };
+    throw std::runtime_error{ "Cannot open chip " + path.string() };
   }
 }
 

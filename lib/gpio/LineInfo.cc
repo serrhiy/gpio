@@ -80,44 +80,22 @@ namespace gpio {
 
   LineDirection LineInfo::getDirection() const {
     throwIfIsNotValid();
-    static const std::unordered_map<gpiod_line_direction, LineDirection> map {
-      { GPIOD_LINE_DIRECTION_AS_IS, LineDirection::AS_IS },
-      { GPIOD_LINE_DIRECTION_INPUT, LineDirection::INPUT },
-      { GPIOD_LINE_DIRECTION_OUTPUT, LineDirection::OUTPUT },
-    };
-    return map.at(gpiod_line_info_get_direction(line_info));
+    return direction_map.at(gpiod_line_info_get_direction(line_info));
   }
 
   LineEdge LineInfo::getEdgeDetection() const {
     throwIfIsNotValid();
-    static const std::unordered_map<gpiod_line_edge, LineEdge> map {
-      { GPIOD_LINE_EDGE_NONE, LineEdge::NONE },
-      { GPIOD_LINE_EDGE_RISING, LineEdge::RISING },
-      { GPIOD_LINE_EDGE_FALLING, LineEdge::FALLING },
-      { GPIOD_LINE_EDGE_BOTH, LineEdge::BOTH },
-    };
-    return map.at(gpiod_line_info_get_edge_detection(line_info));
+    return edge_map.at(gpiod_line_info_get_edge_detection(line_info));
   }
 
   LineBias LineInfo::getBias() const {
     throwIfIsNotValid();
-    static const std::unordered_map<gpiod_line_bias, LineBias> map {
-      { GPIOD_LINE_BIAS_PULL_UP, LineBias::PULL_UP },
-      { GPIOD_LINE_BIAS_PULL_DOWN, LineBias::PULL_DOWN },
-      { GPIOD_LINE_BIAS_DISABLED, LineBias::DISABLED },
-      { GPIOD_LINE_BIAS_UNKNOWN, LineBias::UNKNOWN },
-    };
-    return map.at(gpiod_line_info_get_bias(line_info));
+    return bias_map.at(gpiod_line_info_get_bias(line_info));
   }
 
   LineDrive LineInfo::getDrive() const {
     throwIfIsNotValid();
-    static const std::unordered_map<gpiod_line_drive, LineDrive> map {
-      { GPIOD_LINE_DRIVE_PUSH_PULL, LineDrive::PUSH_PULL },
-      { GPIOD_LINE_DRIVE_OPEN_DRAIN, LineDrive::OPEN_DRAIN },
-      { GPIOD_LINE_DRIVE_OPEN_SOURCE, LineDrive::OPEN_SOURCE },
-    };
-    return map.at(gpiod_line_info_get_drive(line_info));
+    return drive_map.at(gpiod_line_info_get_drive(line_info));
   }
 
   bool LineInfo::isActiveLow() const {
@@ -137,11 +115,6 @@ namespace gpio {
 
   LineClock LineInfo::getEventClock() const {
     throwIfIsNotValid();
-    static const std::unordered_map<gpiod_line_clock, LineClock> map {
-      { GPIOD_LINE_CLOCK_MONOTONIC, LineClock::MONOTONIC },
-      { GPIOD_LINE_CLOCK_HTE, LineClock::HTE },
-      { GPIOD_LINE_CLOCK_REALTIME, LineClock::REALTIME },
-    };
-    return map.at(gpiod_line_info_get_event_clock(line_info));
+    return clock_map.at(gpiod_line_info_get_event_clock(line_info));
   }
 }

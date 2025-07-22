@@ -1,4 +1,4 @@
-add_library(gpio Chip.cc ChipInfo.cc LineInfo.cc InfoEvent.cc)
+add_library(gpio Chip.cc ChipInfo.cc LineInfo.cc InfoEvent.cc LineSettings.cc)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBGPIOD REQUIRED IMPORTED_TARGET libgpiod)

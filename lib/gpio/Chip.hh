@@ -5,6 +5,7 @@
 
 #include <gpiod.h>
 #include <string>
+#include <filesystem>
 
 namespace gpio
 {
@@ -16,7 +17,7 @@ namespace gpio
 
     public:
     Chip() = delete;
-    explicit Chip(const std::string& path);
+    explicit Chip(const std::filesystem::path& path);
 
     Chip(const Chip& other) = delete;
     Chip& operator=(const Chip& other) = delete;
