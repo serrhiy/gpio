@@ -31,6 +31,12 @@ namespace gpio {
     }
   }
 
+  LineSettings::LineSettings(gpiod_line_settings* line_settings):
+    line_settings{ line_settings }
+  {
+
+  }
+
   LineSettings::LineSettings(LineSettings&& other) noexcept:
     line_settings{ other.line_settings }
   {
@@ -153,12 +159,7 @@ namespace gpio {
 
   int LineSettings::setOutputValue(const LineValue value) const {
     throwIfIsNotValid();
-    static const std::unordered_map<LineValue, gpiod_line_value> map {
-      { LineValue::ERROR, GPIOD_LINE_VALUE_ERROR },
-      { LineValue::ACTIVE, GPIOD_LINE_VALUE_ACTIVE },
-      { LineValue::INACTIVE, GPIOD_LINE_VALUE_INACTIVE },
-    };
-    return gpiod_line_settings_set_output_value(line_settings, map.at(value));
+    return gpiod_line_settings_set_output_value(line_settings, line_value_reverse_map.at(value));
   }
 
   LineValue LineSettings::getOutputValue() const {

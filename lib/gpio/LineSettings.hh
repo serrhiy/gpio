@@ -5,7 +5,11 @@
 #include <gpiod.h>
 
 namespace gpio {
+  class LineConfig;
+
   class LineSettings {
+    friend class LineConfig;
+
     gpiod_line_settings* line_settings;
 
     bool isValid() const;
@@ -14,6 +18,7 @@ namespace gpio {
 
     public:
     LineSettings();
+    explicit LineSettings(gpiod_line_settings* line_settings);
 
     LineSettings(const LineSettings&) = delete;
     LineSettings& operator=(const LineSettings&) = delete;

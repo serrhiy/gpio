@@ -44,6 +44,12 @@ namespace gpio {
     { GPIOD_LINE_CLOCK_REALTIME, LineClock::REALTIME },
   };
 
+  static const std::unordered_map<LineValue, gpiod_line_value> line_value_reverse_map {
+    { LineValue::ERROR, GPIOD_LINE_VALUE_ERROR },
+    { LineValue::ACTIVE, GPIOD_LINE_VALUE_ACTIVE },
+    { LineValue::INACTIVE, GPIOD_LINE_VALUE_INACTIVE },
+  };
+
   class LineInfo {
     gpiod_line_info* line_info;
     const bool call_destructor = true;
