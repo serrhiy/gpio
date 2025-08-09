@@ -10,8 +10,7 @@ namespace gpio {
     bool isValid() const;
     void throwIfIsNotValid() const;
     void free();
-
-    public:
+  public:
     explicit RequestConfig();
 
     RequestConfig(const RequestConfig&) = delete;

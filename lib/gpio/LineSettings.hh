@@ -15,8 +15,7 @@ namespace gpio {
     bool isValid() const;
     void throwIfIsNotValid() const;
     void free();
-
-    public:
+  public:
     LineSettings();
     explicit LineSettings(gpiod_line_settings* line_settings);
 

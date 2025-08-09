@@ -12,47 +12,49 @@ namespace gpio {
   enum class LineDrive { PUSH_PULL, OPEN_DRAIN, OPEN_SOURCE };
   enum class LineClock { MONOTONIC, REALTIME, HTE };
 
-  inline const std::unordered_map<gpiod_line_direction, LineDirection> direction_map {
-    { GPIOD_LINE_DIRECTION_AS_IS, LineDirection::AS_IS },
-    { GPIOD_LINE_DIRECTION_INPUT, LineDirection::INPUT },
-    { GPIOD_LINE_DIRECTION_OUTPUT, LineDirection::OUTPUT },
+  inline const std::unordered_map<gpiod_line_direction, LineDirection>
+    direction_map{
+      {  GPIOD_LINE_DIRECTION_AS_IS,  LineDirection::AS_IS },
+      {  GPIOD_LINE_DIRECTION_INPUT,  LineDirection::INPUT },
+      { GPIOD_LINE_DIRECTION_OUTPUT, LineDirection::OUTPUT },
   };
 
-  inline const std::unordered_map<gpiod_line_edge, LineEdge> edge_map {
-    { GPIOD_LINE_EDGE_NONE, LineEdge::NONE },
-    { GPIOD_LINE_EDGE_RISING, LineEdge::RISING },
+  inline const std::unordered_map<gpiod_line_edge, LineEdge> edge_map{
+    {    GPIOD_LINE_EDGE_NONE,    LineEdge::NONE },
+    {  GPIOD_LINE_EDGE_RISING,  LineEdge::RISING },
     { GPIOD_LINE_EDGE_FALLING, LineEdge::FALLING },
-    { GPIOD_LINE_EDGE_BOTH, LineEdge::BOTH },
+    {    GPIOD_LINE_EDGE_BOTH,    LineEdge::BOTH },
   };
 
-  inline const std::unordered_map<gpiod_line_bias, LineBias> bias_map {
-    { GPIOD_LINE_BIAS_PULL_UP, LineBias::PULL_UP },
+  inline const std::unordered_map<gpiod_line_bias, LineBias> bias_map{
+    {   GPIOD_LINE_BIAS_PULL_UP,   LineBias::PULL_UP },
     { GPIOD_LINE_BIAS_PULL_DOWN, LineBias::PULL_DOWN },
-    { GPIOD_LINE_BIAS_DISABLED, LineBias::DISABLED },
-    { GPIOD_LINE_BIAS_UNKNOWN, LineBias::UNKNOWN },
+    {  GPIOD_LINE_BIAS_DISABLED,  LineBias::DISABLED },
+    {   GPIOD_LINE_BIAS_UNKNOWN,   LineBias::UNKNOWN },
   };
 
-  inline const std::unordered_map<gpiod_line_drive, LineDrive> drive_map {
-    { GPIOD_LINE_DRIVE_PUSH_PULL, LineDrive::PUSH_PULL },
-    { GPIOD_LINE_DRIVE_OPEN_DRAIN, LineDrive::OPEN_DRAIN },
+  inline const std::unordered_map<gpiod_line_drive, LineDrive> drive_map{
+    {   GPIOD_LINE_DRIVE_PUSH_PULL,   LineDrive::PUSH_PULL },
+    {  GPIOD_LINE_DRIVE_OPEN_DRAIN,  LineDrive::OPEN_DRAIN },
     { GPIOD_LINE_DRIVE_OPEN_SOURCE, LineDrive::OPEN_SOURCE },
   };
 
-  inline const std::unordered_map<gpiod_line_clock, LineClock> clock_map {
+  inline const std::unordered_map<gpiod_line_clock, LineClock> clock_map{
     { GPIOD_LINE_CLOCK_MONOTONIC, LineClock::MONOTONIC },
-    { GPIOD_LINE_CLOCK_HTE, LineClock::HTE },
-    { GPIOD_LINE_CLOCK_REALTIME, LineClock::REALTIME },
+    {       GPIOD_LINE_CLOCK_HTE,       LineClock::HTE },
+    {  GPIOD_LINE_CLOCK_REALTIME,  LineClock::REALTIME },
   };
 
-  static const std::unordered_map<LineValue, gpiod_line_value> line_value_reverse_map {
-    { LineValue::ERROR, GPIOD_LINE_VALUE_ERROR },
-    { LineValue::ACTIVE, GPIOD_LINE_VALUE_ACTIVE },
-    { LineValue::INACTIVE, GPIOD_LINE_VALUE_INACTIVE },
+  static const std::unordered_map<LineValue, gpiod_line_value>
+    line_value_reverse_map{
+      {    LineValue::ERROR,    GPIOD_LINE_VALUE_ERROR },
+      {   LineValue::ACTIVE,   GPIOD_LINE_VALUE_ACTIVE },
+      { LineValue::INACTIVE, GPIOD_LINE_VALUE_INACTIVE },
   };
 
-  static const std::unordered_map<gpiod_line_value, LineValue> line_value_map {
-    { GPIOD_LINE_VALUE_ERROR, LineValue::ERROR },
-    { GPIOD_LINE_VALUE_ACTIVE, LineValue::ACTIVE },
+  static const std::unordered_map<gpiod_line_value, LineValue> line_value_map{
+    {    GPIOD_LINE_VALUE_ERROR,    LineValue::ERROR },
+    {   GPIOD_LINE_VALUE_ACTIVE,   LineValue::ACTIVE },
     { GPIOD_LINE_VALUE_INACTIVE, LineValue::INACTIVE },
   };
 
@@ -63,7 +65,6 @@ namespace gpio {
     bool isValid() const;
     void free();
     void throwIfIsNotValid() const;
-
   public:
     LineInfo() = delete;
     LineInfo(gpiod_chip* chip, unsigned offset);

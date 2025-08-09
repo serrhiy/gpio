@@ -6,9 +6,7 @@
 
 namespace gpio {
 
-  bool RequestConfig::isValid() const {
-    return request_config != nullptr;
-  }
+  bool RequestConfig::isValid() const { return request_config != nullptr; }
 
   void RequestConfig::throwIfIsNotValid() const {
     if (!isValid()) {
@@ -22,17 +20,14 @@ namespace gpio {
     request_config = nullptr;
   }
 
-  RequestConfig::RequestConfig()
-    : request_config{ gpiod_request_config_new() }
-  {
+  RequestConfig::RequestConfig(): request_config{ gpiod_request_config_new() } {
     if (!isValid()) {
       throw std::runtime_error{ "Cannot allocate Request Config" };
     }
   }
 
-  RequestConfig::RequestConfig(RequestConfig&& other) noexcept:
-    request_config{ other.request_config }
-  {
+  RequestConfig::RequestConfig(RequestConfig&& other) noexcept
+    : request_config{ other.request_config } {
     other.request_config = nullptr;
   }
 
@@ -45,9 +40,7 @@ namespace gpio {
     return *this;
   }
 
-  RequestConfig::~RequestConfig() {
-    free();
-  }
+  RequestConfig::~RequestConfig() { free(); }
 
   void RequestConfig::setConsumer(const std::string& consumer) const {
     throwIfIsNotValid();

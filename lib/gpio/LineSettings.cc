@@ -2,14 +2,12 @@
 
 #include <gpiod.h>
 #include <stdexcept>
-#include <utility>
 #include <unordered_map>
+#include <utility>
 
 namespace gpio {
 
-  bool LineSettings::isValid() const {
-    return line_settings != nullptr;
-  }
+  bool LineSettings::isValid() const { return line_settings != nullptr; }
 
   void LineSettings::throwIfIsNotValid() const {
     if (!isValid()) {
@@ -23,27 +21,21 @@ namespace gpio {
     line_settings = nullptr;
   }
 
-  LineSettings::LineSettings():
-    line_settings{ gpiod_line_settings_new() }
-  {
+  LineSettings::LineSettings(): line_settings{ gpiod_line_settings_new() } {
     if (!isValid()) {
       throw std::runtime_error{ "Cannot allocate line settings" };
     }
   }
 
-  LineSettings::LineSettings(gpiod_line_settings* line_settings):
-    line_settings{ line_settings }
-  {
+  LineSettings::LineSettings(gpiod_line_settings* line_settings)
+    : line_settings{ line_settings } { }
 
-  }
-
-  LineSettings::LineSettings(LineSettings&& other) noexcept:
-    line_settings{ other.line_settings }
-  {
+  LineSettings::LineSettings(LineSettings&& other) noexcept
+    : line_settings{ other.line_settings } {
     other.line_settings = nullptr;
   }
 
-  LineSettings &LineSettings::operator=(LineSettings&& other) noexcept {
+  LineSettings& LineSettings::operator=(LineSettings&& other) noexcept {
     if (this != &other) {
       free();
       std::swap(line_settings, other.line_settings);
@@ -51,9 +43,7 @@ namespace gpio {
     return *this;
   }
 
-  LineSettings::~LineSettings() {
-    free();
-  }
+  LineSettings::~LineSettings() { free(); }
 
   void LineSettings::reset() const {
     throwIfIsNotValid();
@@ -62,9 +52,9 @@ namespace gpio {
 
   int LineSettings::setDirection(const LineDirection direction) const {
     throwIfIsNotValid();
-    static const std::unordered_map<LineDirection, gpiod_line_direction> map {
-      { LineDirection::AS_IS , GPIOD_LINE_DIRECTION_AS_IS },
-      { LineDirection::INPUT, GPIOD_LINE_DIRECTION_INPUT },
+    static const std::unordered_map<LineDirection, gpiod_line_direction> map{
+      {  LineDirection::AS_IS,  GPIOD_LINE_DIRECTION_AS_IS },
+      {  LineDirection::INPUT,  GPIOD_LINE_DIRECTION_INPUT },
       { LineDirection::OUTPUT, GPIOD_LINE_DIRECTION_OUTPUT },
     };
     return gpiod_line_settings_set_direction(line_settings, map.at(direction));
@@ -77,13 +67,16 @@ namespace gpio {
 
   int LineSettings::setEdgeDetection(const LineEdge edge_detection) const {
     throwIfIsNotValid();
-    static const std::unordered_map<LineEdge, gpiod_line_edge> map {
-      { LineEdge::NONE, GPIOD_LINE_EDGE_NONE },
-      { LineEdge::RISING, GPIOD_LINE_EDGE_RISING },
+    static const std::unordered_map<LineEdge, gpiod_line_edge> map{
+      {    LineEdge::NONE,    GPIOD_LINE_EDGE_NONE },
+      {  LineEdge::RISING,  GPIOD_LINE_EDGE_RISING },
       { LineEdge::FALLING, GPIOD_LINE_EDGE_FALLING },
-      { LineEdge::BOTH, GPIOD_LINE_EDGE_BOTH },
+      {    LineEdge::BOTH,    GPIOD_LINE_EDGE_BOTH },
     };
-    return gpiod_line_settings_set_edge_detection(line_settings, map.at(edge_detection));
+    return gpiod_line_settings_set_edge_detection(
+      line_settings,
+      map.at(edge_detection)
+    );
   }
 
   LineEdge LineSettings::getEdgeDetection() const {
@@ -93,11 +86,11 @@ namespace gpio {
 
   int LineSettings::setBias(const LineBias bias) const {
     throwIfIsNotValid();
-    static const std::unordered_map<LineBias, gpiod_line_bias> map {
-      { LineBias::PULL_UP, GPIOD_LINE_BIAS_PULL_UP },
+    static const std::unordered_map<LineBias, gpiod_line_bias> map{
+      {   LineBias::PULL_UP,   GPIOD_LINE_BIAS_PULL_UP },
       { LineBias::PULL_DOWN, GPIOD_LINE_BIAS_PULL_DOWN },
-      { LineBias::DISABLED, GPIOD_LINE_BIAS_DISABLED },
-      { LineBias::UNKNOWN, GPIOD_LINE_BIAS_UNKNOWN },
+      {  LineBias::DISABLED,  GPIOD_LINE_BIAS_DISABLED },
+      {   LineBias::UNKNOWN,   GPIOD_LINE_BIAS_UNKNOWN },
     };
     return gpiod_line_settings_set_bias(line_settings, map.at(bias));
   }
@@ -105,14 +98,14 @@ namespace gpio {
   LineBias LineSettings::getBias() const {
     throwIfIsNotValid();
     return bias_map.at(gpiod_line_settings_get_bias(line_settings));
-  };
+  }
 
   int LineSettings::setDrive(const LineDrive drive) const {
     throwIfIsNotValid();
-    static const std::unordered_map<LineDrive, gpiod_line_drive> map {
-      { LineDrive::PUSH_PULL, GPIOD_LINE_DRIVE_PUSH_PULL },
-      { LineDrive::OPEN_DRAIN, GPIOD_LINE_DRIVE_OPEN_DRAIN },
-      { LineDrive::OPEN_SOURCE, GPIOD_LINE_DRIVE_OPEN_SOURCE},
+    static const std::unordered_map<LineDrive, gpiod_line_drive> map{
+      {   LineDrive::PUSH_PULL,   GPIOD_LINE_DRIVE_PUSH_PULL },
+      {  LineDrive::OPEN_DRAIN,  GPIOD_LINE_DRIVE_OPEN_DRAIN },
+      { LineDrive::OPEN_SOURCE, GPIOD_LINE_DRIVE_OPEN_SOURCE },
     };
     return gpiod_line_settings_set_drive(line_settings, map.at(drive));
   }
@@ -144,10 +137,10 @@ namespace gpio {
 
   int LineSettings::setEventClock(const LineClock clock) const {
     throwIfIsNotValid();
-    static const std::unordered_map<LineClock, gpiod_line_clock> map {
+    static const std::unordered_map<LineClock, gpiod_line_clock> map{
       { LineClock::MONOTONIC, GPIOD_LINE_CLOCK_MONOTONIC },
-      { LineClock::HTE, GPIOD_LINE_CLOCK_HTE },
-      { LineClock::REALTIME, GPIOD_LINE_CLOCK_REALTIME },
+      {       LineClock::HTE,       GPIOD_LINE_CLOCK_HTE },
+      {  LineClock::REALTIME,  GPIOD_LINE_CLOCK_REALTIME },
     };
     return gpiod_line_settings_set_event_clock(line_settings, map.at(clock));
   }
@@ -159,11 +152,16 @@ namespace gpio {
 
   int LineSettings::setOutputValue(const LineValue value) const {
     throwIfIsNotValid();
-    return gpiod_line_settings_set_output_value(line_settings, line_value_reverse_map.at(value));
+    return gpiod_line_settings_set_output_value(
+      line_settings,
+      line_value_reverse_map.at(value)
+    );
   }
 
   LineValue LineSettings::getOutputValue() const {
     throwIfIsNotValid();
-    return line_value_map.at(gpiod_line_settings_get_output_value(line_settings));
+    return line_value_map.at(
+      gpiod_line_settings_get_output_value(line_settings)
+    );
   }
 }

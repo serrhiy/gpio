@@ -7,9 +7,7 @@
 
 namespace gpio {
 
-  bool LineInfo::isValid() const {
-    return line_info != nullptr;
-  }
+  bool LineInfo::isValid() const { return line_info != nullptr; }
 
   void LineInfo::free() {
     if (!isValid()) return;
@@ -23,24 +21,22 @@ namespace gpio {
     }
   }
 
-  LineInfo::LineInfo(gpiod_chip* chip, unsigned offset):
-    line_info{ gpiod_chip_get_line_info(chip, offset) }
-  {
+  LineInfo::LineInfo(gpiod_chip* chip, unsigned offset)
+    : line_info{ gpiod_chip_get_line_info(chip, offset) } {
     if (!isValid()) {
       throw std::runtime_error{ "Cannot allocate line info" };
     }
   }
 
-  LineInfo::LineInfo(gpiod_info_event* info_event):
-    line_info{ gpiod_info_event_get_line_info(info_event) },
-    call_destructor{ false }
-  {
+  LineInfo::LineInfo(gpiod_info_event* info_event)
+    : line_info{ gpiod_info_event_get_line_info(info_event) },
+      call_destructor{ false } {
     if (!isValid()) {
       throw std::runtime_error{ "Cannot allocate line info" };
     }
   }
 
-  LineInfo::LineInfo(LineInfo&& other) noexcept : line_info{ other.line_info } {
+  LineInfo::LineInfo(LineInfo&& other) noexcept: line_info{ other.line_info } {
     other.line_info = nullptr;
   }
 

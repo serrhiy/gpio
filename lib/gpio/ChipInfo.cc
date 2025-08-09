@@ -4,17 +4,13 @@
 #include <stdexcept>
 
 namespace gpio {
-  ChipInfo::ChipInfo(gpiod_chip* chip):
-    chip_info{ gpiod_chip_get_info(chip) }
-  {
+  ChipInfo::ChipInfo(gpiod_chip* chip): chip_info{ gpiod_chip_get_info(chip) } {
     if (!isValid()) {
       throw std::runtime_error{ "Cannot allocate chip info" };
     }
   }
 
-  ChipInfo::ChipInfo(ChipInfo&& other) noexcept:
-    chip_info{ other.chip_info }
-  {
+  ChipInfo::ChipInfo(ChipInfo&& other) noexcept: chip_info{ other.chip_info } {
     other.chip_info = nullptr;
   }
 
@@ -27,9 +23,7 @@ namespace gpio {
     return *this;
   }
 
-  ChipInfo::~ChipInfo() {
-    free();
-  }
+  ChipInfo::~ChipInfo() { free(); }
 
   std::string ChipInfo::getName() const {
     throwIfIsNotValid();
@@ -46,9 +40,7 @@ namespace gpio {
     return gpiod_chip_info_get_num_lines(chip_info);
   }
 
-  bool ChipInfo::isValid() const {
-    return chip_info != nullptr;
-  }
+  bool ChipInfo::isValid() const { return chip_info != nullptr; }
 
   void ChipInfo::free() {
     if (!isValid()) return;

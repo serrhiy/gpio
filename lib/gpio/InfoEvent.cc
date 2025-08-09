@@ -2,13 +2,11 @@
 #include "LineInfo.hh"
 
 #include <gpiod.h>
-#include <utility>
 #include <unordered_map>
+#include <utility>
 
 namespace gpio {
-  bool InfoEvent::isValid() const {
-    return info_event != nullptr;
-  }
+  bool InfoEvent::isValid() const { return info_event != nullptr; }
 
   void InfoEvent::throwIfIsNotValid() const {
     if (!isValid()) {
@@ -23,16 +21,13 @@ namespace gpio {
   }
 
   InfoEvent::InfoEvent(gpiod_chip* chip)
-    : info_event{ gpiod_chip_read_info_event(chip) }
-  {
+    : info_event{ gpiod_chip_read_info_event(chip) } {
     if (!isValid()) {
       throw std::runtime_error{ "Cannot allocate info event" };
     }
   }
 
-  InfoEvent::InfoEvent(InfoEvent&& other)
-    : info_event{ other.info_event }
-  {
+  InfoEvent::InfoEvent(InfoEvent&& other): info_event{ other.info_event } {
     other.info_event = nullptr;
   }
 
@@ -44,16 +39,15 @@ namespace gpio {
     return *this;
   }
 
-  InfoEvent::~InfoEvent() {
-    free();
-  }
+  InfoEvent::~InfoEvent() { free(); }
 
   InfoEventType InfoEvent::getEventType() const {
     throwIfIsNotValid();
-    static const std::unordered_map<gpiod_info_event_type, InfoEventType> map {
-      { GPIOD_INFO_EVENT_LINE_REQUESTED, InfoEventType::LINE_REQUESTED },
-      { GPIOD_INFO_EVENT_LINE_RELEASED, InfoEventType::LINE_RELEASED },
-      { GPIOD_INFO_EVENT_LINE_CONFIG_CHANGED, InfoEventType::LINE_CONFIG_CHANGED }
+    static const std::unordered_map<gpiod_info_event_type, InfoEventType> map{
+      {      GPIOD_INFO_EVENT_LINE_REQUESTED,InfoEventType::LINE_REQUESTED                                             },
+      {       GPIOD_INFO_EVENT_LINE_RELEASED,  InfoEventType::LINE_RELEASED },
+      { GPIOD_INFO_EVENT_LINE_CONFIG_CHANGED,
+       InfoEventType::LINE_CONFIG_CHANGED                                  }
     };
     return map.at(gpiod_info_event_get_event_type(info_event));
   }

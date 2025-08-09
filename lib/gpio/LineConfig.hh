@@ -1,20 +1,19 @@
 #pragma once
 
-#include "LineSettings.hh"
 #include "LineInfo.hh"
+#include "LineSettings.hh"
 
 #include <gpiod.h>
 #include <vector>
 
 namespace gpio {
-  class LineConfig {    
+  class LineConfig {
     gpiod_line_config* line_config;
 
     void free();
     bool isValid() const;
     void throwIfIsNotValid() const;
-
-    public:
+  public:
     LineConfig();
 
     LineConfig(const LineConfig&) = delete;
@@ -27,12 +26,16 @@ namespace gpio {
 
     void reset() const;
 
-    void addLineSettings(const std::vector<unsigned>& offsets, LineSettings& line_settings) const;
+    void addLineSettings(
+      const std::vector<unsigned>& offsets, LineSettings& line_settings
+    ) const;
 
-    void addLineSettings(const unsigned offset, LineSettings& line_settingss) const;
+    void addLineSettings(
+      const unsigned offset, LineSettings& line_settingss
+    ) const;
 
     LineSettings getLineSettings(const unsigned offset) const;
-    
+
     void setOutputValues(const std::vector<LineValue>& values) const;
 
     void setOutputValue(const LineValue value) const;

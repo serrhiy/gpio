@@ -1,22 +1,20 @@
 #pragma once
 
 #include "ChipInfo.hh"
-#include "LineInfo.hh"
 #include "InfoEvent.hh"
+#include "LineInfo.hh"
 
+#include <filesystem>
 #include <gpiod.h>
 #include <string>
-#include <filesystem>
 
-namespace gpio
-{
+namespace gpio {
   class Chip {
     gpiod_chip* chip;
 
     void close();
     void throwIfIsNotValid() const;
-
-    public:
+  public:
     Chip() = delete;
     explicit Chip(const std::filesystem::path& path);
 

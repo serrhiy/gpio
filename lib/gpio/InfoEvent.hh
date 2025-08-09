@@ -2,10 +2,10 @@
 
 #include "LineInfo.hh"
 
+#include <cstdint>
 #include <gpiod.h>
 #include <stdexcept>
 #include <unordered_map>
-#include <cstdint>
 
 namespace gpio {
   enum class InfoEventType {
@@ -20,8 +20,7 @@ namespace gpio {
     bool isValid() const;
     void throwIfIsNotValid() const;
     void free();
-
-    public:
+  public:
     InfoEvent() = delete;
     explicit InfoEvent(gpiod_chip* chip);
 

@@ -9,8 +9,7 @@ namespace gpio {
 
     void free();
     void throwIfIsNotValid() const;
-
-    public:
+  public:
     ChipInfo() = delete;
     ChipInfo(gpiod_chip* chip);
 

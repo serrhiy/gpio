@@ -1,14 +1,14 @@
 #pragma once
 
-#include "LineInfo.hh"
 #include "LineConfig.hh"
+#include "LineInfo.hh"
 
 #include <gpiod.h>
+#include <map>
+#include <memory>
+#include <ranges>
 #include <string>
 #include <vector>
-#include <map>
-#include <ranges>
-#include <memory>
 
 namespace gpio {
   class LineRequest {
@@ -17,8 +17,7 @@ namespace gpio {
     bool isValid() const;
     void throwIfIsNotValid() const;
     void release();
-
-    public:
+  public:
     LineRequest() = delete;
     explicit LineRequest(gpiod_line_request* line_request);
 
@@ -34,7 +33,7 @@ namespace gpio {
     size_t getNumRequestedLines() const;
     std::vector<unsigned int> getRequestedOffsets() const;
     LineValue getValue(unsigned int offset) const;
-  
+
     std::map<unsigned int, LineValue>
       getValuesSubset(const std::vector<unsigned int>& offsets) const;
   };

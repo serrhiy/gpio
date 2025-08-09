@@ -2,10 +2,10 @@
 #include "ChipInfo.hh"
 #include "LineInfo.hh"
 
-#include <gpiod.h>
-#include <string>
-#include <stdexcept>
 #include <filesystem>
+#include <gpiod.h>
+#include <stdexcept>
+#include <string>
 
 namespace gpio {
   void Chip::close() {
@@ -38,18 +38,14 @@ namespace gpio {
     if (this != &other) {
       close();
       chip = other.chip;
-      other.chip = nullptr; 
+      other.chip = nullptr;
     }
     return *this;
   }
 
-  Chip::~Chip() {
-    close();
-  }
+  Chip::~Chip() { close(); }
 
-  bool Chip::isValid() const {
-    return chip != nullptr;
-  }
+  bool Chip::isValid() const { return chip != nullptr; }
 
   std::string Chip::getPath() const {
     throwIfIsNotValid();
@@ -61,17 +57,13 @@ namespace gpio {
     return gpiod_chip_get_fd(chip);
   }
 
-  ChipInfo Chip::getInfo() {
-    return ChipInfo{ chip };
-  }
+  ChipInfo Chip::getInfo() { return ChipInfo{ chip }; }
 
   LineInfo Chip::getLineInfo(unsigned offset) {
     return LineInfo{ chip, offset };
   }
 
-  InfoEvent Chip::getInfoEvent() {
-    return InfoEvent{ chip };
-  }
+  InfoEvent Chip::getInfoEvent() { return InfoEvent{ chip }; }
 
   void swap(Chip& first, Chip& second) {
     using std::swap;
