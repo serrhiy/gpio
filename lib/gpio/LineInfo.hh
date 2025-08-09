@@ -50,6 +50,12 @@ namespace gpio {
     { LineValue::INACTIVE, GPIOD_LINE_VALUE_INACTIVE },
   };
 
+  static const std::unordered_map<gpiod_line_value, LineValue> line_value_map {
+    { GPIOD_LINE_VALUE_ERROR, LineValue::ERROR },
+    { GPIOD_LINE_VALUE_ACTIVE, LineValue::ACTIVE },
+    { GPIOD_LINE_VALUE_INACTIVE, LineValue::INACTIVE },
+  };
+
   class LineInfo {
     gpiod_line_info* line_info;
     const bool call_destructor = true;

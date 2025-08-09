@@ -2,6 +2,7 @@
 
 #include "ChipInfo.hh"
 #include "LineInfo.hh"
+#include "InfoEvent.hh"
 
 #include <gpiod.h>
 #include <string>
@@ -37,6 +38,7 @@ namespace gpio
 
     ChipInfo getInfo();
     LineInfo getLineInfo(unsigned offset);
+    InfoEvent getInfoEvent();
   };
 
   void swap(Chip& first, Chip& second);

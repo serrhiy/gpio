@@ -164,11 +164,6 @@ namespace gpio {
 
   LineValue LineSettings::getOutputValue() const {
     throwIfIsNotValid();
-    static const std::unordered_map<gpiod_line_value, LineValue> map {
-      { GPIOD_LINE_VALUE_ERROR, LineValue::ERROR },
-      { GPIOD_LINE_VALUE_ACTIVE, LineValue::ACTIVE },
-      { GPIOD_LINE_VALUE_INACTIVE, LineValue::INACTIVE },
-    };
-    return map.at(gpiod_line_settings_get_output_value(line_settings));
+    return line_value_map.at(gpiod_line_settings_get_output_value(line_settings));
   }
 }

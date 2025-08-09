@@ -7,69 +7,75 @@
 #include <stdexcept>
 #include <filesystem>
 
-void gpio::Chip::close() {
-  if (!isValid()) return;
-  gpiod_chip_close(chip);
-  chip = nullptr;
-}
-
-void gpio::Chip::throwIfIsNotValid() const {
-  if (!isValid()) {
-    throw std::runtime_error{ "Chip object is not valid" };
+namespace gpio {
+  void Chip::close() {
+    if (!isValid()) return;
+    gpiod_chip_close(chip);
+    chip = nullptr;
   }
-}
 
-gpio::Chip::Chip(const std::filesystem::path& path): chip{ nullptr } {
-  if (!std::filesystem::exists(path)) {
-    throw std::runtime_error{ "File does not exists" };
+  void Chip::throwIfIsNotValid() const {
+    if (!isValid()) {
+      throw std::runtime_error{ "Chip object is not valid" };
+    }
   }
-  chip = gpiod_chip_open(path.c_str());
-  if (!isValid()) {
-    throw std::runtime_error{ "Cannot open chip " + path.string() };
+
+  Chip::Chip(const std::filesystem::path& path): chip{ nullptr } {
+    if (!std::filesystem::exists(path)) {
+      throw std::runtime_error{ "File does not exist" };
+    }
+    chip = gpiod_chip_open(path.c_str());
+    if (!isValid()) {
+      throw std::runtime_error{ "Cannot open chip " + path.string() };
+    }
   }
-}
 
-gpio::Chip::Chip(Chip&& other) noexcept: chip{ other.chip } {
-  other.chip = nullptr;
-}
+  Chip::Chip(Chip&& other) noexcept: chip{ other.chip } {
+    other.chip = nullptr;
+  }
 
-gpio::Chip& gpio::Chip::operator=(Chip&& other) noexcept {
-  if (this != &other) {
+  Chip& gpio::Chip::operator=(Chip&& other) noexcept {
+    if (this != &other) {
+      close();
+      chip = other.chip;
+      other.chip = nullptr; 
+    }
+    return *this;
+  }
+
+  Chip::~Chip() {
     close();
-    chip = other.chip;
-    other.chip = nullptr; 
   }
-  return *this;
-}
 
-gpio::Chip::~Chip() {
-  close();
-}
+  bool Chip::isValid() const {
+    return chip != nullptr;
+  }
 
-bool gpio::Chip::isValid() const {
-  return chip != nullptr;
-}
+  std::string Chip::getPath() const {
+    throwIfIsNotValid();
+    return gpiod_chip_get_path(chip);
+  }
 
-std::string gpio::Chip::getPath() const {
-  throwIfIsNotValid();
-  return gpiod_chip_get_path(chip);
-}
+  int Chip::getFd() const {
+    throwIfIsNotValid();
+    return gpiod_chip_get_fd(chip);
+  }
 
-int gpio::Chip::getFd() const {
-  throwIfIsNotValid();
-  return gpiod_chip_get_fd(chip);
-}
+  ChipInfo Chip::getInfo() {
+    return ChipInfo{ chip };
+  }
 
-gpio::ChipInfo gpio::Chip::getInfo() {
-  return ChipInfo{ chip };
-}
+  LineInfo Chip::getLineInfo(unsigned offset) {
+    return LineInfo{ chip, offset };
+  }
 
-gpio::LineInfo gpio::Chip::getLineInfo(unsigned offset) {
-  return LineInfo{ chip, offset };
-}
+  InfoEvent Chip::getInfoEvent() {
+    return InfoEvent{ chip };
+  }
 
-void gpio::swap(gpio::Chip& first, gpio::Chip& second) {
-  using std::swap;
+  void swap(Chip& first, Chip& second) {
+    using std::swap;
 
-  swap(first.chip, second.chip);
+    swap(first.chip, second.chip);
+  }
 }

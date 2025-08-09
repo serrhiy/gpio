@@ -14,8 +14,8 @@ namespace gpio {
     public:
     explicit RequestConfig();
 
-    RequestConfig(RequestConfig&) = delete;
-    RequestConfig& operator=(RequestConfig&) = delete;
+    RequestConfig(const RequestConfig&) = delete;
+    RequestConfig& operator=(const RequestConfig&) = delete;
 
     RequestConfig(RequestConfig&& other) noexcept;
     RequestConfig& operator=(RequestConfig&& other);
