@@ -4,7 +4,10 @@
 #include <string>
 
 namespace gpio {
+  class Chip;
   class RequestConfig {
+    friend class Chip;
+
     gpiod_request_config* request_config;
 
     bool isValid() const;

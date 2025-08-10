@@ -4,6 +4,7 @@
 #include <gpiod.h>
 #include <stdexcept>
 #include <ranges>
+#include <system_error>
 
 namespace gpio {
 
@@ -87,7 +88,7 @@ namespace gpio {
   void LineRequest::setValue(unsigned offset, LineValue value) const {
     int result = gpiod_line_request_set_value(line_request, offset, line_value_reverse_map.at(value));
     if (result == -1) {
-      throw std::runtime_error{ "setValue error: " + std::to_string(result) };
+      throw std::system_error(errno, std::system_category(), "setValue failed");
     }
   }
 

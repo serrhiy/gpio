@@ -1,8 +1,8 @@
 #pragma once
 
 #include <fmt/format.h>
+#include <fmt/ranges.h>
 
-#include <memory>
 #include <string_view>
 #include <string>
 #include <syslog.h>

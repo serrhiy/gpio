@@ -3,6 +3,9 @@
 #include "ChipInfo.hh"
 #include "InfoEvent.hh"
 #include "LineInfo.hh"
+#include "LineRequest.hh"
+#include "RequestConfig.hh"
+#include "LineConfig.hh"
 
 #include <filesystem>
 #include <gpiod.h>
@@ -12,6 +15,7 @@ namespace gpio {
   class Chip {
     gpiod_chip* chip;
 
+    bool isValid() const;
     void close();
     void throwIfIsNotValid() const;
   public:
@@ -28,15 +32,14 @@ namespace gpio {
 
     friend void swap(Chip& first, Chip& second);
 
-    bool isValid() const;
-
     std::string getPath() const;
 
     int getFd() const;
 
-    ChipInfo getInfo();
-    LineInfo getLineInfo(unsigned offset);
-    InfoEvent getInfoEvent();
+    ChipInfo getInfo() const;
+    LineInfo getLineInfo(unsigned offset) const;
+    InfoEvent getInfoEvent() const;
+    LineRequest requestLines(const RequestConfig& request_config, const LineConfig& line_config) const;
   };
 
   void swap(Chip& first, Chip& second);

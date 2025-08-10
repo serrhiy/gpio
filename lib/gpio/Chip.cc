@@ -57,17 +57,23 @@ namespace gpio {
     return gpiod_chip_get_fd(chip);
   }
 
-  ChipInfo Chip::getInfo() { return ChipInfo{ chip }; }
+  ChipInfo Chip::getInfo() const { return ChipInfo{ chip }; }
 
-  LineInfo Chip::getLineInfo(unsigned offset) {
+  LineInfo Chip::getLineInfo(unsigned offset) const {
     return LineInfo{ chip, offset };
   }
 
-  InfoEvent Chip::getInfoEvent() { return InfoEvent{ chip }; }
+  InfoEvent Chip::getInfoEvent() const { return InfoEvent{ chip }; }
 
   void swap(Chip& first, Chip& second) {
     using std::swap;
 
     swap(first.chip, second.chip);
+  }
+
+  LineRequest Chip::requestLines(const RequestConfig& request_config, const LineConfig& line_config) const {
+    gpiod_line_request* line_request =
+      gpiod_chip_request_lines(chip, request_config.request_config, line_config.line_config);
+    return LineRequest{ line_request };
   }
 }

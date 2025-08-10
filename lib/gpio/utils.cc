@@ -31,7 +31,7 @@ std::vector<std::filesystem::path> gpio::getChipsPath() {
 std::filesystem::path gpio::getDefaultChipPath() {
   const auto chips = getChipsPath();
   if (chips.empty()) {
-    throw std::runtime_error{ "Chips do no finded" };
+    throw std::runtime_error{ "Chips do not finded" };
   }
   return chips[0];
 }

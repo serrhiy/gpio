@@ -8,9 +8,11 @@
 
 namespace gpio {
   class LineRequest;
+  class Chip;
 
   class LineConfig {
     friend class LineRequest;
+    friend class Chip;
 
     gpiod_line_config* line_config;
 
@@ -31,11 +33,11 @@ namespace gpio {
     void reset() const;
 
     void addLineSettings(
-      const std::vector<unsigned>& offsets, LineSettings& line_settings
+      const std::vector<unsigned>& offsets, const LineSettings& line_settings
     ) const;
 
     void addLineSettings(
-      const unsigned offset, LineSettings& line_settingss
+      const unsigned offset, const LineSettings& line_settingss
     ) const;
 
     LineSettings getLineSettings(const unsigned offset) const;
@@ -45,6 +47,6 @@ namespace gpio {
     void setOutputValue(const LineValue value) const;
 
     size_t getNumConfiguredOffsets() const;
-    std::vector<unsigned int> getConfiguredOffsets(size_t lines_number) const;
+    std::vector<unsigned int> getConfiguredOffsets() const;
   };
 }

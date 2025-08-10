@@ -7,6 +7,7 @@ namespace gpio {
   class ChipInfo {
     gpiod_chip_info* chip_info;
 
+    bool isValid() const;
     void free();
     void throwIfIsNotValid() const;
   public:
@@ -24,6 +25,5 @@ namespace gpio {
     std::string getName() const;
     std::string getLabel() const;
     size_t getNumLines() const;
-    bool isValid() const;
   };
 }

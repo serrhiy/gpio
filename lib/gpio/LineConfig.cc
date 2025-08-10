@@ -49,7 +49,7 @@ namespace gpio {
   }
 
   void LineConfig::addLineSettings(
-    const std::vector<unsigned>& offsets, LineSettings& line_settings
+    const std::vector<unsigned>& offsets, const LineSettings& line_settings
   ) const {
     throwIfIsNotValid();
     int result = gpiod_line_config_add_line_settings(
@@ -65,7 +65,7 @@ namespace gpio {
   }
 
   void LineConfig::addLineSettings(
-    const unsigned offset, LineSettings& line_settings
+    const unsigned offset, const LineSettings& line_settings
   ) const {
     throwIfIsNotValid();
     return addLineSettings(std::vector{ offset }, line_settings);
@@ -108,17 +108,11 @@ namespace gpio {
   }
 
   std::vector<unsigned int>
-    LineConfig::getConfiguredOffsets(size_t lines_number) const {
-    auto offsets = std::make_unique<unsigned int[]>(lines_number);
-    size_t size = gpiod_line_config_get_configured_offsets(
-      line_config,
-      offsets.get(),
-      lines_number
-    );
-    std::vector<unsigned int> result(size);
-    for (size_t index = 0; index < size; index++) {
-      result[ index ] = offsets[ index ];
-    }
-    return result;
+    LineConfig::getConfiguredOffsets() const {
+  
+    const size_t num_offsets = getNumConfiguredOffsets();
+    std::vector<unsigned int> offsets(num_offsets);
+    gpiod_line_config_get_configured_offsets(line_config, offsets.data(), num_offsets);
+    return offsets;
   }
 }
