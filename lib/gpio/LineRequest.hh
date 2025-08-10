@@ -31,10 +31,22 @@ namespace gpio {
 
     std::string getChipName() const;
     size_t getNumRequestedLines() const;
-    std::vector<unsigned int> getRequestedOffsets() const;
-    LineValue getValue(unsigned int offset) const;
+    std::vector<unsigned> getRequestedOffsets() const;
+    LineValue getValue(unsigned offset) const;
 
-    std::map<unsigned int, LineValue>
+    std::map<unsigned, LineValue>
       getValuesSubset(const std::vector<unsigned int>& offsets) const;
+
+    std::map<unsigned, LineValue> getValues() const;
+
+    void setValue(unsigned offset, LineValue value) const;
+    void setValuesSubset(const std::map<unsigned, LineValue>& data) const;
+    void setValues(std::vector<LineValue>& values) const;
+
+    void reconfigureLines(const LineConfig& line_config) const;
+
+    int getFd() const;
+
+    int waitEdgeEvents(int64_t timeout_ns) const;
   };
 }

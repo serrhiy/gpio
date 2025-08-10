@@ -7,6 +7,8 @@ add_library(
   LineSettings.cc
   LineConfig.cc
   RequestConfig.cc
+  LineRequest.cc
+  utils.cc
 )
 
 find_package(PkgConfig REQUIRED)

@@ -7,7 +7,11 @@
 #include <vector>
 
 namespace gpio {
+  class LineRequest;
+
   class LineConfig {
+    friend class LineRequest;
+
     gpiod_line_config* line_config;
 
     void free();
