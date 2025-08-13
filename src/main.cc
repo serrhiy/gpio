@@ -8,8 +8,18 @@
 
 #include <thread>
 #include <chrono>
+#include <cmath>
 
 namespace fs = std::filesystem;
+
+bool approximatelyZero(const double x) {
+  static constexpr double precision = 1e-4;
+  return std::abs(x) <= precision;
+}
+
+double foo(const double x) {
+  return std::sin(x);
+}
 
 void start() {
   constexpr unsigned line = 17;
@@ -32,17 +42,17 @@ void start() {
   const gpio::RequestConfig request_config;
   const gpio::LineRequest line_request = chip.requestLines(request_config, line_config);
 
-  auto start = std::chrono::system_clock::now();
   while (true) {
-    line_request.setValue(line, gpio::LineValue::ACTIVE);
-    std::this_thread::sleep_for(std::chrono::seconds{ 1 });
-    line_request.setValue(line, gpio::LineValue::INACTIVE);
-    std::this_thread::sleep_for(std::chrono::seconds{ 1 });
-
-    auto end = std::chrono::system_clock::now();
-    if (end - start > std::chrono::seconds{ 5 }) {
-      break;
+    using namespace std::chrono;
+    const duration time = system_clock::now().time_since_epoch();
+    const double x = duration_cast<duration<double>>(time).count();
+    if (approximatelyZero(1 - foo(x))) {
+      line_request.setValue(line, gpio::LineValue::ACTIVE);
     }
+    else if (approximatelyZero(1 + foo(x))) {
+      line_request.setValue(line, gpio::LineValue::INACTIVE);
+    }
+    std::this_thread::yield();
   }
 }
 
